@@ -26,7 +26,12 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> userOptional = userRepo.findById(id);
         if (userOptional.isPresent()) {
-            return new ObjectMapper().convertValue(userOptional.get(), UserDTO.class);
+            return UserDTO.builder().
+                    id(userOptional.get().getId()).
+                    name(userOptional.get().getName()).
+                    email(userOptional.get().getEmail()).
+                    role(userOptional.get().getRole()).
+                    build();
         } else {
             return null;
         }

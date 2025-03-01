@@ -3,6 +3,7 @@ package com.Bank.FirstBank.Util.Entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "user")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
