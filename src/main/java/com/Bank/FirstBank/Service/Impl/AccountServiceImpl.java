@@ -28,12 +28,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountDTO getAccount(Long id) {
-        Optional<Account> account= accountRepository.findById(id);
-        if(account.isPresent()) {
-            AccountDTO accountDTO = new ObjectMapper().convertValue(account.get(), AccountDTO.class);
-            return accountDTO;
-        }
-        return null;
+        Optional<Account> account= accountRepository.findByAccountNumber(id);
+        return account.map(value -> new ObjectMapper().convertValue(value, AccountDTO.class)).orElse(null);
     }
 
     @Override

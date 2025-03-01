@@ -1,4 +1,4 @@
-package com.Bank.FirstBank.Service;
+package com.Bank.FirstBank.Security;
 
 import com.Bank.FirstBank.Repository.UserRepository;
 import com.Bank.FirstBank.Security.UserInfoUserDetails;
@@ -18,9 +18,13 @@ public class UserInfoService implements UserDetailsService {
     UserRepository userRepository;  // Repository for User
 
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user= userRepository.findByName(username);
-        return user.map(UserInfoUserDetails::new).orElseThrow(()->new UsernameNotFoundException("User not found "+username));
+        Optional<User> user = userRepository.findByName(username);
+        return user.map(u -> {
+            u.setPassword("{noop}" + u.getPassword()); // Prefix password with {noop}
+            return new UserInfoUserDetails(u);
+        }).orElseThrow(() -> new UsernameNotFoundException("User not found " + username));
     }
 }
