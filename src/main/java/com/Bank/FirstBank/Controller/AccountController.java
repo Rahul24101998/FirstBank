@@ -13,6 +13,12 @@ public class AccountController {
     @Autowired
     AccountService accountService;
 
+
+        @GetMapping("/welcome")
+    String home() {
+        return "Welcome to First Bank";
+    }
+
     @GetMapping("/details/{id}")
     ResponseEntity<AccountDTO> getAccount(@PathVariable("id") Long id) {
        AccountDTO accountDTO = accountService.getAccount(id);

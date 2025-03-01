@@ -1,9 +1,17 @@
 package com.Bank.FirstBank.Util.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Objects;
 
 @Table(name = "account")
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,75 +25,19 @@ public class Account {
     @Column(name = "ifsc_code", length = 11)
     private String ifscCode;
 
-    public Account() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    public Account(Long accountNumber, String accountHolderName, String accountType, double balance, String branchName, String ifscCode) {
-        this.accountNumber = accountNumber;
-        this.accountHolderName = accountHolderName;
-        this.accountType = accountType;
-        this.balance = balance;
-        this.branchName = branchName;
-        this.ifscCode = ifscCode;
-    }
-
-    public Long getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(Long accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public String getAccountHolderName() {
-        return accountHolderName;
-    }
-
-    public void setAccountHolderName(String accountHolderName) {
-        this.accountHolderName = accountHolderName;
-    }
-
-    public String getAccountType() {
-        return accountType;
-    }
-
-    public void setAccountType(String accountType) {
-        this.accountType = accountType;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
-    public String getBranchName() {
-        return branchName;
-    }
-
-    public void setBranchName(String branchName) {
-        this.branchName = branchName;
-    }
-
-    public String getIfscCode() {
-        return ifscCode;
-    }
-
-    public void setIfscCode(String ifscCode) {
-        this.ifscCode = ifscCode;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Account account)) return false;
+        return Double.compare(account.balance, balance) == 0 && Objects.equals(accountNumber, account.accountNumber) && Objects.equals(accountHolderName, account.accountHolderName) && Objects.equals(accountType, account.accountType) && Objects.equals(branchName, account.branchName) && Objects.equals(ifscCode, account.ifscCode) && Objects.equals(user, account.user);
     }
 
     @Override
-    public String toString() {
-        return "Account{" +
-                "accountNumber='" + accountNumber + '\'' +
-                ", accountHolderName='" + accountHolderName + '\'' +
-                ", accountType='" + accountType + '\'' +
-                ", balance=" + balance +
-                ", branchName='" + branchName + '\'' +
-                ", ifscCode='" + ifscCode + '\'' +
-                '}';
+    public int hashCode() {
+        return Objects.hash(accountNumber, accountHolderName, accountType, balance, branchName, ifscCode, user);
     }
 }
