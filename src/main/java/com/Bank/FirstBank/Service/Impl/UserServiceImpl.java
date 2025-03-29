@@ -1,5 +1,7 @@
 package com.Bank.FirstBank.Service.Impl;
 
+import com.Bank.FirstBank.Execptions.ErrorCode;
+import com.Bank.FirstBank.Execptions.NoSuchCustomerException;
 import com.Bank.FirstBank.Repository.UserRepository;
 import com.Bank.FirstBank.Service.UserService;
 import com.Bank.FirstBank.Util.Dto.UserDTO;
@@ -22,19 +24,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUser(Long id) {
-
+    public UserDTO findUserById(Long id) {
         Optional<User> userOptional = userRepo.findById(id);
-        if (userOptional.isPresent()) {
-            return UserDTO.builder().
-                    id(userOptional.get().getId()).
-                    name(userOptional.get().getName()).
-                    email(userOptional.get().getEmail()).
-                    role(userOptional.get().getRole()).
-                    build();
-        } else {
-            return null;
-        }
+        return userOptional.map(user -> UserDTO.builder().
+                id(user.getId()).
+                name(user.getName()).
+                email(user.getEmail()).
+                role(user.getRole()).
+                build()).orElseThrow(() -> new NoSuchCustomerException(ErrorCode.NO_SUCH_CUSTOMER));
     }
 
     @Override

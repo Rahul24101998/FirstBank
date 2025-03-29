@@ -5,23 +5,21 @@ import com.Bank.FirstBank.Service.UserService;
 import com.Bank.FirstBank.Util.Dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/User")
+@Validated
 public class UserController {
 
     @Autowired
     UserService userService;
 
     @GetMapping("/details/{id}")
-    ResponseEntity<UserDTO> getUser(@PathVariable("id") Long id) {
-        UserDTO userDTO = userService.getUser(id);
-        if (userDTO == null) {
-            return ResponseEntity.notFound().build();
-        }else{
-            return  ResponseEntity.ok(userDTO);
-        }
+    ResponseEntity<UserDTO> findById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(userService.findUserById(id));
+
     }
 
     @PostMapping("/add")

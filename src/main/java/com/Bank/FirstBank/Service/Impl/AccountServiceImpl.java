@@ -1,5 +1,7 @@
 package com.Bank.FirstBank.Service.Impl;
 
+import com.Bank.FirstBank.Execptions.ErrorCode;
+import com.Bank.FirstBank.Execptions.NoSuchCustomerException;
 import com.Bank.FirstBank.Repository.AccountRepository;
 import com.Bank.FirstBank.Service.AccountService;
 import com.Bank.FirstBank.Util.Dto.AccountDTO;
@@ -29,7 +31,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountDTO getAccount(Long id) {
         Optional<Account> account= accountRepository.findByAccountNumber(id);
-        return account.map(value -> new ObjectMapper().convertValue(value, AccountDTO.class)).orElse(null);
+        return account.map(value -> AccountDTO.builder().
+                accountNumber(value.getAccountNumber()).
+                accountType(value.getAccountType()).
+                balance(value.getBalance()).
+                build()).orElseThrow(() -> new NoSuchCustomerException(ErrorCode.NO_SUCH_ENTRY));
     }
 
     @Override
